@@ -1,0 +1,26 @@
+services:
+  app:
+    container_name: game-api-service
+    image: game-api-service:latest
+    restart: unless-stopped
+    stop_signal: SIGQUIT
+    stop_grace_period: 15s
+    network_mode: bridge
+    ports:
+      - "20808:80"
+    environment:
+      # app
+      - LAPIS_ENVIRONMENT=production
+      - NUM_WORKERS=4
+      - PORT=80
+      # mysql
+      - MYSQL_HOST=192.168.121.20
+      - MYSQL_PORT=3306
+      - MYSQL_USER=root
+      - MYSQL_PASSWORD=gameapi123
+      - MYSQL_DATABASE=api
+      # redis
+      - REDIS_HOST=192.168.121.20
+      - REDIS_PORT=6379
+      - REDIS_PASSWORD=gameapi123
+      - REDIS_NAMESPACE=api
