@@ -1,0 +1,23 @@
+# /etc/systemd/system/zk1.service
+[Unit]
+Description=Zk1 Server
+After=network-online.target
+Wants=network-online.target
+
+[Service]
+Type=simple
+WorkingDirectory=/data/zk/zk1/
+ExecStart=/data/zk/zk1/p9_app_server
+ExecReload=/bin/sh -c '/bin/kill -USR1 "$MAINPID"; /bin/sleep 0.5; /bin/kill -USR1 "$MAINPID"'
+KillMode=control-group
+KillSignal=SIGKILL
+TimeoutStopSec=5s
+SuccessExitStatus=SIGKILL
+Restart=always
+RestartSec=2s
+LimitNOFILE=1048576
+LimitNPROC=1048576
+LimitCORE=infinity
+
+[Install]
+WantedBy=multi-user.target

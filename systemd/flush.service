@@ -1,0 +1,25 @@
+# /etc/systemd/system/game1.service
+[Unit]
+Description=Game 1 Server
+After=network-online.target
+Wants=network-online.target
+
+[Service]
+Type=simple
+WorkingDirectory=/data/game1
+ExecStart=/data/game1/p9_app_server
+ExecReload=/bin/sh -c '/bin/kill -USR1 "$MAINPID"; /bin/sleep 0.5; /bin/kill -USR1 "$MAINPID"'
+ExecStop=-/bin/kill -USR2 ${MAINPID}
+ExecStop=/bin/sleep 15
+KillMode=control-group
+KillSignal=SIGKILL
+TimeoutStopSec=16s
+SuccessExitStatus=SIGKILL
+Restart=always
+RestartSec=2s
+LimitNOFILE=1048576
+LimitNPROC=1048576
+LimitCORE=infinity
+
+[Install]
+WantedBy=multi-user.target
